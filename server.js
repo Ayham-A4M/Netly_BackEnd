@@ -11,6 +11,7 @@ const postRoutes=require('./src/routes/posts');
 const profileRoutes=require('./src/routes/profile');
 const commentRoutes=require('./src/routes/comments');
 const notificationRoutes=require('./src/routes/notifications');
+const eventRoutes=require('./src/routes/event');
 // Routes
 const PORT = 8000;
 const cors=require('cors')
@@ -34,6 +35,7 @@ app.use(postRoutes);
 app.use(profileRoutes);
 app.use(commentRoutes);
 app.use(notificationRoutes);
+app.use(eventRoutes);
 app.get('/test',(req,res)=>{
     console.log('test');
     return res.status(200).send('done');
