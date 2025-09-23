@@ -2,6 +2,7 @@ const postModel = require('../../models/post');
 const userModel = require('../../models/user');
 const ObjectId = require('mongoose').Types.ObjectId
 const userReactionPipleine = require('../../helper/dataBase/userReactionPipline');
+const sharedPostPipeline=require('../../helper/dataBase/sharedPostPipeline');
 const handleGetUserProfile = async (req, res, next) => {
     const getUserPosts = async (userId) => {
         const response = await postModel.aggregate([
@@ -20,6 +21,7 @@ const handleGetUserProfile = async (req, res, next) => {
                 $unwind: '$userInformation'
             },
             // Add this new $lookup stage to check for user reaction
+            ...sharedPostPipeline(userId),
             ...userReactionPipleine(userId)
             ,
             {
@@ -49,7 +51,8 @@ const handleGetUserProfile = async (req, res, next) => {
                     publishedAt: true,
                     isEditable: true,
                     _id: true,
-                    userReaction: true  // Include the user's reaction in the output
+                    userReaction: true,  // Include the user's reaction in the output
+                    sharedPost:true
                 }
             },
             {

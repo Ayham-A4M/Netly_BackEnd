@@ -12,6 +12,7 @@ const profileRoutes=require('./src/routes/profile');
 const commentRoutes=require('./src/routes/comments');
 const notificationRoutes=require('./src/routes/notifications');
 const eventRoutes=require('./src/routes/event');
+const activityRoutes=require('./src/routes/activity');
 // Routes
 const PORT = 8000;
 const cors=require('cors')
@@ -36,6 +37,7 @@ app.use(profileRoutes);
 app.use(commentRoutes);
 app.use(notificationRoutes);
 app.use(eventRoutes);
+app.use(activityRoutes);
 app.get('/test',(req,res)=>{
     console.log('test');
     return res.status(200).send('done');

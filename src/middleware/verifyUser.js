@@ -1,4 +1,3 @@
-
 const userModel = require('../models/user');
 const jwt = require('jsonwebtoken');
 require('dotenv')
@@ -10,6 +9,9 @@ const verifyUser = (req, res, next) => {
             if (err) { return res.status(401).send({ msg: 'unauthorized' }) }
             const response = await userModel.findById(decode.id);
             if (response) {
+                if(decode.tokenVersion!==response.tokenVersion){
+                    return res.status(401).send({ msg: 'unauthorized' })
+                }
                 res.locals.id = decode.id;
                 return next();
             }

@@ -4,6 +4,7 @@ const calculateNumberOfPages = require('../../helper/calculateNumberOfPages');
 const userReactionPipleine = require('../../helper/dataBase/userReactionPipline');
 const ObjectId = require('mongoose').Types.ObjectId
 const paginationVariable = require('../../helper/paginitionVariables')
+const sharedPostPipeline = require('../../helper/dataBase/sharedPostPipeline');
 const handleGetPosts = async (req, res, next) => {
     const page = req.query.page || 1;
     const { limit, skip } = paginationVariable(page, 2);
@@ -25,6 +26,7 @@ const handleGetPosts = async (req, res, next) => {
             {
                 $unwind: '$userInformation'
             },
+            ...sharedPostPipeline(userId),
             ...userReactionPipleine(userId)
             , {
                 $addFields: {
@@ -39,6 +41,7 @@ const handleGetPosts = async (req, res, next) => {
             },
             {
                 $project: {
+                    sharedPost: true,
                     userName: "$userInformation.userName",
                     avatar: "$userInformation.avatar",
                     defaultCoverColor: "$userInformation.defaultCoverColor",

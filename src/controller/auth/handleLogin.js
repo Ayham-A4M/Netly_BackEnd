@@ -17,11 +17,11 @@ const handleLogin = async (req, res, next) => {
                 throw new AppError(403, 'wrong password or email')
             }
             // create jwt token (role && tokenVersion && fullName) http only cookies
-            const payload = { id: userFromDB._id, userName: userFromDB.userName }
-            const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '60m' }); // after 30 miniuts it will expired and return 401
+            const payload = { id: userFromDB._id, userName: userFromDB.userName,tokenVersion:userFromDB.tokenVersion }
+            const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '20s' }); // after 30 miniuts it will expired and return 401
             const refreshToken = jwt.sign({ ...payload, tokenVersion: userFromDB.tokenVersion }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
             // after create jwt and refresh token send it to user with done operation
-            res.cookie('jwt', accessToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 60 * 60 * 1000 }); //original
+            res.cookie('jwt', accessToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 20 * 1000 }); //original
             res.cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 7 * 24 * 60 * 60 * 1000 }); // original
         })
         const numberOfNotification = await notificationModel.countDocuments({ receiverId: userFromDB._id,isRead:false });

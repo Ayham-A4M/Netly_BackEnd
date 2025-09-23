@@ -3,7 +3,7 @@ const { Types: { ObjectId } } = mongoose;
 const postSchema = new mongoose.Schema({
     userId: { type: ObjectId, ref: 'user', required: true },
     feeling: { type: String }, // optional like Homam is  feeling happy
-    content: { type: String, required: true },
+    content: { type: String },
     images: [{ type: String }],
     tags: [{
         type: String,
@@ -12,6 +12,8 @@ const postSchema = new mongoose.Schema({
     loveCount: { type: Number, default: 0 },
     commentsCount: { type: Number, default: 0 },
     sharedCount: { type: Number, default: 0 },
+    // if the post is shared
+    sharedPostId: { type: ObjectId, ref: 'post' },
 
     visibility: {
         type: String,

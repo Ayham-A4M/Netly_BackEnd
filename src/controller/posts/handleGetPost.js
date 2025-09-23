@@ -2,6 +2,7 @@ const userReactionPipleine = require('../../helper/dataBase/userReactionPipline'
 const postModel = require('../../models/post');
 const AppError = require('../../utils/AppError');
 const ObjectId = require('mongoose').Types.ObjectId;
+const sharedPostPipeline=require('../../helper/dataBase/sharedPostPipeline');
 const handleGetPost = async (req, res, next) => {
 
     try {
@@ -23,6 +24,7 @@ const handleGetPost = async (req, res, next) => {
             {
                 $unwind: '$userInformation'
             },
+            ...sharedPostPipeline(userId),
             ...userReactionPipleine(userId)
             , {
                 $addFields: {
@@ -51,7 +53,8 @@ const handleGetPost = async (req, res, next) => {
                     publishedAt: true,
                     isEditable: true,
                     _id: true,
-                    userReaction: true  // Include the user's reaction in the output
+                    userReaction: true,  // Include the user's reaction in the output
+                    sharedPost:true
                 }
             },
 

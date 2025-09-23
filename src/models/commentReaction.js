@@ -10,7 +10,6 @@ commentReactionSchema.index(
     { commentId: 1, userId: 1 },
     {
         unique: true,
-
     }
 )
 const commentReactionModel = mongoose.model('commentReaction', commentReactionSchema, 'commentReactions');

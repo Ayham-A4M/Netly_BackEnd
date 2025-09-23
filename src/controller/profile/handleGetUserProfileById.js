@@ -2,6 +2,7 @@ const postModel = require('../../models/post');
 const userModel = require('../../models/user');
 const ObjectId = require('mongoose').Types.ObjectId
 const userReactionPipline = require('../../helper/dataBase/userReactionPipline');
+const sharedPostPipeline = require('../../helper/dataBase/sharedPostPipeline');
 const followModel = require('../../models/follow');
 const handleGetUserProfileById = async (req, res, next) => {
 
@@ -21,6 +22,7 @@ const handleGetUserProfileById = async (req, res, next) => {
             {
                 $unwind: '$userInformation'
             },
+            ...sharedPostPipeline(userIdReq),
             ...userReactionPipline(userIdReq),
             {
                 $addFields: {
@@ -53,7 +55,8 @@ const handleGetUserProfileById = async (req, res, next) => {
                     publishedAt: true,
                     isEditable: true,
                     _id: true,
-                    userReaction: true  // Include the user's reaction in the output
+                    userReaction: true,  // Include the user's reaction in the output
+                    sharedPost: true
                 }
             },
             {
@@ -76,7 +79,7 @@ const handleGetUserProfileById = async (req, res, next) => {
         }
         const [profile, userPosts, isFollowing] = await Promise.all([userModel.findById(userId, { tokenVersion: false, email: false, password: false }), getUserPosts(userId, userIdReq), followModel.findOne({ userId: userId, followerId: userIdReq })])
 
-        return res.status(200).send({ profile, posts: userPosts, isEditableProfile: userId === userIdReq, isFollowing:!!isFollowing });
+        return res.status(200).send({ profile, posts: userPosts, isEditableProfile: userId === userIdReq, isFollowing: !!isFollowing });
 
     } catch (err) {
         next(err)

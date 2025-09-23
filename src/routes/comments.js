@@ -12,6 +12,8 @@ const validateReplyOnComment = require('../validators/comment/reply.validator');
 const validateReactionOnComment = require('../validators/comment/commentReaction.validator');
 const handleCreateReplyOnComment = require('../controller/comment/handleCreateReplyOnComment');
 const handleDeleteReaction = require('../controller/comment/handleDeleteReaction');
+const handleDeleteComment = require('../controller/comment/handleDeleteComment');
+const handleUpdateComment = require('../controller/comment/handleUpdateComment');
 // const validateReactionOnPost = require('../validators/posts/reaction.validator');
 // const handleDeletePost = require('../controller/posts/handleDeletePost');
 
@@ -22,8 +24,10 @@ router.post('/api/comment/newComment', verifyUser, validateCommentOnPost, handle
 router.post('/api/comment/react', verifyUser, validateReactionOnComment, handleReactionOnComment);
 router.post('/api/comment/reply', verifyUser, validateReplyOnComment, handleCreateReplyOnComment);
 
-router.delete('/api/comment/react/:id', verifyUser, handleDeleteReaction);
+router.put('/api/comment/:id',verifyUser,handleUpdateComment);
 
+router.delete('/api/comment/react/:id', verifyUser, handleDeleteReaction);
+router.delete('/api/comment/:id', verifyUser, handleDeleteComment);
 
 
 module.exports = router;
