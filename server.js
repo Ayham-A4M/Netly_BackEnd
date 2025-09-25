@@ -29,7 +29,6 @@ app.use(cors({
 // require('./src/public')
 app.use('/public', express.static(path.join(__dirname, '/src/public'))); // serve the images from public folder
 app.use(cookieParser());
-app.use(errorHandling);
 app.use(express.json());
 app.use(authRoutes);
 app.use(postRoutes);
@@ -42,6 +41,7 @@ app.get('/test',(req,res)=>{
     console.log('test');
     return res.status(200).send('done');
 })
+app.use(errorHandling);
 
 app.listen(PORT, () => {
     console.log(`app listen now on port ${PORT}`);
