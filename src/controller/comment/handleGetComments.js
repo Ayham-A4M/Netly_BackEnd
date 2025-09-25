@@ -71,10 +71,13 @@ const handleGetComments = async (req, res, next) => {
             }
         ]).skip(skip).limit(limit);
 
-
-        const countOfComments = await commentModel.countDocuments();
         if (response) {
-            return res.status(200).send({ comments: response.length > 0 ? response : null, limitOfPages: calculateNumberOfPages(countOfComments,limit) })
+            if (page === 1) {
+                const countOfComments = await commentModel.countDocuments();
+                return res.status(200).send({ comments: response.length > 0 ? response : null, limitOfPages: calculateNumberOfPages(countOfComments, limit) })
+            } else {
+                return res.status(200).send({ comments: response.length > 0 ? response : null })
+            }
         }
     } catch (err) {
         next(err)
