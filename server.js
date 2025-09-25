@@ -4,6 +4,7 @@ const app = express();
 const cookieParser = require('cookie-parser')
 const { default: mongoose } = require('mongoose');
 const errorHandling = require('./src/middleware/errorHandling')
+const cors = require('cors')
 const path = require('path')
 // Routes
 const authRoutes = require('./src/routes/auth');
@@ -15,7 +16,6 @@ const eventRoutes = require('./src/routes/event');
 const activityRoutes = require('./src/routes/activity');
 // Routes
 const PORT = 8000;
-const cors = require('cors')
 mongoose.connect(process.env.DATA_BASE_URI).then(() => {
     console.log("connected complete !!")
 }).catch(err => {
@@ -45,7 +45,7 @@ const corsOptions = {
     optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
-
+app.options('*', cors(corsOptions));
 
 
 
