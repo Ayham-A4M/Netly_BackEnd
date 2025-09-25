@@ -66,4 +66,5 @@ app.get('/test', (req, res) => {
 })
 app.use(errorHandling);
 
+module.exports = app;
 
