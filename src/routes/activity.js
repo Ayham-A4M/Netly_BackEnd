@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const verifyUser = require('../middleware/verifyUser');
 const handleGetUserComments = require('../controller/activity/handleGetUserComments');
-const handleGetPostsReactions = require('../controller/activity/handleGetpostsReactions');
+const handleGetPostsReactions = require('../controller/activity/handleGetPostsReactions');
 const handleGetCommentsReactions = require('../controller/activity/handleGetCommentsReactions');
 
 router.get('/api/activity/comments', verifyUser, handleGetUserComments);
