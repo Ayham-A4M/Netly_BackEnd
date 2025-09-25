@@ -22,18 +22,37 @@ mongoose.connect(process.env.DATA_BASE_URI).then(() => {
     console.log(err);
 })
 
-const allowedOrigins = ['https://netly-front-end.vercel.app', 'https://netly-front-end.vercel.app/']
+// const allowedOrigins = ['https://netly-front-end.vercel.app', 'https://netly-front-end.vercel.app/']
+// const corsOptions = {
+//     origin: (origin, callback) => {
+//         // Allow requests with no origin (like mobile apps or curl requests)
+//         if (!origin) return callback(null, true);
+
+//         const originClean = origin.endsWith('/') ? origin.slice(0, -1) : origin;
+
+//         if (allowedOrigins.some(allowed => {
+//             const allowedClean = allowed.endsWith('/') ? allowed.slice(0, -1) : allowed;
+//             return originClean === allowedClean;
+//         })) {
+//             callback(null, true);
+//         } else {
+//             callback(new Error('Not allowed by CORS'));
+//         }
+//     },
+//     credentials: true,
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//     allowedHeaders: ['Content-Type', 'Authorization'],
+//     optionsSuccessStatus: 200
+// };
+// app.use(cors(corsOptions));
+
+const allowedOrigins = ['https://netly-front-end.vercel.app'];
+
 const corsOptions = {
     origin: (origin, callback) => {
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
+        if (!origin) return callback(null, true); // allow Postman / curl
 
-        const originClean = origin.endsWith('/') ? origin.slice(0, -1) : origin;
-
-        if (allowedOrigins.some(allowed => {
-            const allowedClean = allowed.endsWith('/') ? allowed.slice(0, -1) : allowed;
-            return originClean === allowedClean;
-        })) {
+        if (allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
@@ -44,7 +63,10 @@ const corsOptions = {
     allowedHeaders: ['Content-Type', 'Authorization'],
     optionsSuccessStatus: 200
 };
+
 app.use(cors(corsOptions));
+
+
 
 app.use('/public', express.static(path.join(__dirname, '/src/public'))); // serve the images from public folder
 app.use(cookieParser());
