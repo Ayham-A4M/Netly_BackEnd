@@ -1,13 +1,12 @@
 const commentModel = require('../../models/comment');
 const ObjectId = require('mongoose').Types.ObjectId;
-const Limit = 10;
-const skipDocuments = require('../../helper/skipDocuments');
 const calculateNumberOfPages = require('../../helper/calculateNumberOfPages')
+const paginitionVariables = require('../../helper/paginitionVariables');
 const handleGetComments = async (req, res, next) => {
     const postId = req.query.postId;
     const userId = res.locals.id;
     const page = req.query.page || 1;
-
+    const { skip, limit } = paginitionVariables(page, 15);
     try {
         const response = await commentModel.aggregate([
             {
@@ -70,12 +69,12 @@ const handleGetComments = async (req, res, next) => {
                     _id: true,
                 }
             }
-        ]).skip(skipDocuments(page, Limit)).limit(Limit);
+        ]).skip(skip).limit(limit);
 
 
         const countOfComments = await commentModel.countDocuments();
         if (response) {
-            return res.status(200).send({ comments: response.length > 0 ? response : null, limitPages: calculateNumberOfPages(countOfComments, Limit) })
+            return res.status(200).send({ comments: response.length > 0 ? response : null, limitOfPages: calculateNumberOfPages(countOfComments,limit) })
         }
     } catch (err) {
         next(err)
