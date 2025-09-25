@@ -66,5 +66,8 @@ app.get('/test', (req, res) => {
 })
 app.use(errorHandling);
 
-module.exports = app;
+app.listen(PORT, () => {
+    console.log(`app listen now on port ${PORT}`);
+})
+
 
