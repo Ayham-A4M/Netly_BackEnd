@@ -22,7 +22,9 @@ mongoose.connect(process.env.DATA_BASE_URI).then(() => {
     console.log(err);
 })
 
-const allowedOrigins = ['https://netly-front-end.vercel.app', 'https://netly-front-end.vercel.app/']
+// const allowedOrigins = ['https://netly-front-end.vercel.app', 'https://netly-front-end.vercel.app/']
+const allowedOrigins = ['http://localhost:5173/', 'http://localhost:5173']
+
 const corsOptions = {
     origin: (origin, callback) => {
         // Allow requests with no origin (like mobile apps or curl requests)
