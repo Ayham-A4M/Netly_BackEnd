@@ -22,8 +22,8 @@ mongoose.connect(process.env.DATA_BASE_URI).then(() => {
     console.log(err);
 })
 
-// const allowedOrigins = ['https://netly-front-end.vercel.app', 'https://netly-front-end.vercel.app/']
-const allowedOrigins = ['http://localhost:5173/', 'http://localhost:5173']
+const allowedOrigins = ['https://netly-front-end.vercel.app', 'https://netly-front-end.vercel.app/']
+// const allowedOrigins = ['http://localhost:5173/', 'http://localhost:5173']
 
 const corsOptions = {
     origin: (origin, callback) => {
@@ -47,12 +47,7 @@ const corsOptions = {
     optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
-// app.use(cors({ origin: true, credentials: true }));
 
-
-
-
-app.use('/public', express.static(path.join(__dirname, '/src/public'))); // serve the images from public folder
 app.use(cookieParser());
 app.use(express.json());
 app.use(authRoutes);
@@ -62,10 +57,6 @@ app.use(commentRoutes);
 app.use(notificationRoutes);
 app.use(eventRoutes);
 app.use(activityRoutes);
-app.get('/test', (req, res) => {
-    console.log('test');
-    return res.status(200).send('done');
-})
 app.use(errorHandling);
 app.listen(PORT, () => {
     console.log(`app listen now on port ${PORT}`);
